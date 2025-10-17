@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCSO Test Suite Generator</title>
+    <style>
+        body {
+            font-family: 'Trebuchet MS', sans-serif;
+            background-image: url('/images/r99e_l0hq_210426.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            color: #5C4D3D;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 25px;
+            background-color: rgba(237, 201, 175, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(92, 77, 61, 0.3);
+            border: 2px solid #A38B6A;
+            position: relative;
+            overflow: hidden;
+        }
+        .container::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: url('https://www.transparenttextures.com/patterns/sandpaper.png');
+            opacity: 0.1;
+            z-index: -1;
+            border-radius: 20px;
+        }
+        h2 {
+            color: #8B5A2B;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+        }
+        h2::after {
+            content: "";
+            display: block;
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #D4A76A, transparent);
+            margin: 5px auto 0;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 20px;
+            color: #6B4F3C;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+        }
+        input {
+            width: 80%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 2px solid #C19A6B;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            background-color: rgba(255, 253, 245, 0.8);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #8B5A2B;
+            box-shadow: 0 0 8px rgba(210, 145, 70, 0.5);
+        }
+        button {
+            margin-top: 25px;
+            padding: 14px;
+            width: 85%;
+            background: linear-gradient(to bottom, #D4A76A, #B78B56);
+            color: #FFF9F0;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(92, 77, 61, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        button:hover {
+            background: linear-gradient(to bottom, #C19A6B, #A0784D);
+            box-shadow: 0 6px 12px rgba(92, 77, 61, 0.3);
+        }
+        button:active {
+            transform: translateY(2px);
+        }
+        button::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+            transition: all 0.3s;
+        }
+        button:hover::after {
+            left: 100%;
+        }
+        .formula-container {
+            margin: 10px auto; /* This centers the box horizontally */
+            padding: 8px 15px;
+            background-color: rgba(255, 248, 220, 0.6);
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            color: #5C4D3D;
+            border: 1px dashed #C19A6B;
+            display: inline-block;
+            min-width: 100px;
+            text-align: center;
+        }
+        .result-container {
+            margin-top: 15px;
+            padding: 20px;
+            background-color: rgba(255, 248, 220, 0.8);
+            border-radius: 10px;
+            font-weight: bold;
+            color: #6B4F3C;
+            border: 1px dashed #C19A6B;
+            text-align: center;
+            min-height: 50px;
+            position: relative;
+        }
+        .result-container::before {
+            content: "🐾";
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: rgba(237, 201, 175, 0.9);
+            padding: 0 10px;
+            font-size: 18px;
+        }
+        .sand-cat-icon {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            width: 90px;
+            height: 90px;
+            background-image: url('/images/sand-cat-image.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 10;
+        }
+        .math-symbol {
+            font-size: 24px;
+            vertical-align: middle;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sand-cat-icon">
+            <img src="/images//images/ec2e0992-64c8-4940-90fe-1a89ec77c7fe.png" alt="Sand Cat" width="90" height="90" style="display:block;">
+        </div>
+
+        <h2>SandCatTest</h2>
+
+        <div style="text-align: center;"></div>
+        <div class="formula-container" id="formulaDisplay">
+            <span class="math-symbol">→</span> 1, 2²
+        </div>
+
+        <label for="strength">Strength (t):</label>
+        <input type="number" id="strength" min="1" value="2" required oninput="updateFormula()">
+
+        <label for="numInputs">Number of Inputs :</label>
+        <input type="number" id="numInputs" min="1" value="2" required oninput="updateFormula()">
+
+        <label for="paramValue">Value of Parameter :</label>
+        <input type="number" id="paramValue" min="1" value="2" required oninput="updateFormula()">
+
+        <button onclick="submitForm()">Generate Test Suite</button>
+
+        <div class="result-container" id="result">
+            Awaiting input...
+        </div>
+    </div>
+
+    <script>
+        function updateFormula() {
+            const strength = document.getElementById("strength").value || 2;
+            const numInputs = document.getElementById("numInputs").value || 2;
+            const paramValue = document.getElementById("paramValue").value || 2;
+
+            const formulaText = `${strength}, ${numInputs}<sup>${paramValue}</sup>`;
+            document.getElementById("formulaDisplay").innerHTML = formulaText;
+        }
+
+        async function submitForm() {
+            let strength = document.getElementById("strength").value;
+            let numInputs = document.getElementById("numInputs").value;
+            let paramValue = document.getElementById("paramValue").value;
+
+            if (!strength || !numInputs || !paramValue) {
+                document.getElementById("result").innerText = "Please fill in all fields.";
+                console.error("❌ [ERROR] Missing input fields.");
+                return;
+            }
+
+            // Update formula display one more time before submission
+            updateFormula();
+
+            // Relative URL to call the backend hosted on the same origin
+            let baseUrl = "/generate";
+            let params = `?strength=${encodeURIComponent(strength)}&numInputs=${encodeURIComponent(numInputs)}&paramValue=${encodeURIComponent(paramValue)}`;
+            let requestUrl = baseUrl + params;
+
+            console.log("🚀 [DEBUG] Sending request to:", requestUrl);
+
+            try {
+                const response = await fetch(requestUrl, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'text/plain' }
+                });
+
+                if (!response.ok) {
+                    let errorText = await response.text();
+                    console.error("❌ [ERROR] Server returned:", response.status, errorText);
+                    throw new Error(`Server Error: ${response.status} - ${errorText}`);
+                }
+
+                const result = await response.text();
+                console.log("✅ [SUCCESS] Server response:", result);
+
+                document.getElementById("result").innerText = result;
+            } catch (error) {
+                console.error("❌ [ERROR] Fetch error:", error);
+                document.getElementById("result").innerText = "Error generating test suite: " + error.message;
+            }
+        }
+
+        // Initialize the formula display when page loads
+        document.addEventListener('DOMContentLoaded', updateFormula);
+    </script>
+</body>
+</html>
