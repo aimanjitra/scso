@@ -1,8 +1,13 @@
-# Stage 1: build with Maven + JDK 21
-FROM maven:3.10.1-openjdk-21 AS build
+# Stage 1: build with JDK21 and install Maven (guarantees Java 21 build)
+FROM eclipse-temurin:21-jdk AS build
 WORKDIR /src
 
-# Copy POM and source tree
+# Install Maven (Debian-based images)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends maven && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy sources
 COPY my-app/pom.xml my-app/
 COPY my-app/src my-app/src
 
@@ -11,7 +16,7 @@ WORKDIR /src/my-app
 # Build shaded jar (skip tests)
 RUN mvn -DskipTests clean package
 
-# Stage 2: small runtime image with JRE 21
+# Stage 2: small runtime image with JRE21
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 
