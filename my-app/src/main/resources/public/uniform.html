@@ -21,42 +21,17 @@
       max-width: 800px;
       margin: 40px auto;
       padding: 25px;
-      background-color: rgba(237, 201, 175, 0.9);
+      background-color: rgba(237, 201, 175, 0.92);
       border-radius: 15px;
       box-shadow: 0 8px 16px rgba(92, 77, 61, 0.3);
       border: 2px solid #A38B6A;
       position: relative;
-      overflow: hidden;
-    }
-
-    .container::before {
-      content: "";
-      position: absolute;
-      top: -10px;
-      left: -10px;
-      right: -10px;
-      bottom: -10px;
-      background: url('https://www.transparenttextures.com/patterns/sandpaper.png');
-      opacity: 0.1;
-      z-index: -1;
-      border-radius: 20px;
     }
 
     h2 {
       color: #8B5A2B;
       text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
       margin-bottom: 25px;
-      position: relative;
-      display: inline-block;
-    }
-
-    h2::after {
-      content: "";
-      display: block;
-      width: 60%;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, #D4A76A, transparent);
-      margin: 5px auto 0;
     }
 
     label {
@@ -99,8 +74,6 @@
       cursor: pointer;
       transition: all 0.3s;
       box-shadow: 0 4px 8px rgba(92, 77, 61, 0.2);
-      position: relative;
-      overflow: hidden;
     }
 
     button:hover {
@@ -118,32 +91,39 @@
       color: #5C4D3D;
       border: 1px dashed #C19A6B;
       display: inline-block;
-      text-align: center;
     }
 
     .result-container {
       margin-top: 20px;
       padding: 20px;
-      background-color: rgba(255, 248, 220, 0.8);
+      background-color: rgba(255, 248, 220, 0.85);
       border-radius: 10px;
       font-weight: bold;
       color: #6B4F3C;
       border: 1px dashed #C19A6B;
-      text-align: center;
-      min-height: 50px;
-      position: relative;
     }
 
+    /* Centered header text */
+    .result-header {
+      text-align: center;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    /* Compact 3-column result grid */
     .result-output {
-      margin: 10px auto 0;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px 40px;
+      gap: 6px 25px;
       font-family: 'Courier New', monospace;
-      white-space: pre-wrap;
       text-align: left;
+      font-size: 15px;
       justify-content: center;
-      max-width: 90%;
+      margin: 0 auto;
+      max-width: 95%;
+      white-space: pre-wrap;
     }
 
     @media (max-width: 900px) {
@@ -164,22 +144,16 @@
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
-      z-index: 10;
     }
-
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="sand-cat-icon">
-      <img src="/images/ec2e0992-64c8-4940-90fe-1a89ec77c7fe.png" alt="Sand Cat" width="90" height="90">
-    </div>
+    <div class="sand-cat-icon"></div>
 
     <h2>SandCatTest</h2>
 
-    <div class="formula-container" id="formulaDisplay">
-      <span class="math-symbol">→</span> 1, 2²
-    </div>
+    <div class="formula-container" id="formulaDisplay">1, 2²</div>
 
     <label for="strength">Strength (t):</label>
     <input type="number" id="strength" min="1" value="2" oninput="updateFormula()">
@@ -192,7 +166,7 @@
 
     <button onclick="submitForm()">Generate Test Suite</button>
 
-    <div class="result-container">
+    <div class="result-container" id="result-container">
       <div id="result" class="result-output">Awaiting input...</div>
     </div>
   </div>
@@ -222,15 +196,23 @@
         const res = await fetch(url);
         if (!res.ok) throw new Error(`Server Error ${res.status}`);
         const text = await res.text();
-        document.getElementById("result").innerHTML = formatResultOutput(text);
+        document.getElementById("result-container").innerHTML = formatResultOutput(text);
       } catch (err) {
         document.getElementById("result").innerText = "Error: " + err.message;
       }
     }
 
     function formatResultOutput(rawText) {
-      const lines = rawText.trim().split(/\r?\n/).filter(line => line.trim() !== "");
-      return lines.map(line => `<p>${line}</p>`).join("");
+      const lines = rawText.trim().split(/\r?\n/).filter(l => l.trim() !== "");
+      const header = lines.slice(0, 2).join("<br>");
+      const results = lines.slice(2)
+        .map(line => `<p>${line}</p>`)
+        .join("");
+
+      return `
+        <div class="result-header">${header}</div>
+        <div class="result-output">${results}</div>
+      `;
     }
 
     document.addEventListener('DOMContentLoaded', updateFormula);
