@@ -114,17 +114,18 @@
 
     /* Compact 3-column result grid */
     .result-output {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px 25px;
-      font-family: 'Courier New', monospace;
-      text-align: left;
-      font-size: 15px;
-      justify-content: center;
-      margin: 0 auto;
-      max-width: 95%;
-      white-space: pre-wrap;
-    }
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px 20px;  /* ↓ reduced both row and column spacing */
+  font-family: 'Courier New', monospace;
+  text-align: left;
+  font-size: 15px;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 95%;
+  white-space: pre-wrap;
+  line-height: 0.8; /* ↓ tighter vertical line spacing */
+}
 
     @media (max-width: 900px) {
       .result-output { grid-template-columns: repeat(2, 1fr); }
