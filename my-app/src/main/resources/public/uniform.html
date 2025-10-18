@@ -192,8 +192,8 @@
 
         <button onclick="submitForm()">Generate Test Suite</button>
 
-        <div class="result-container" id="result">
-            Awaiting input...
+        <div class="result-container">
+        <div id="result" class="result-output">Awaiting input...</div>
         </div>
     </div>
 
@@ -206,6 +206,28 @@
             const formulaText = `${strength}, ${numInputs}<sup>${paramValue}</sup>`;
             document.getElementById("formulaDisplay").innerHTML = formulaText;
         }
+
+        .result-output {
+    margin-top: 10px;
+    column-count: 3;      /* ← You can change 3 to 2 or 4 if needed */
+    column-gap: 30px;
+    white-space: pre-line;
+    word-break: break-word;
+    font-family: 'Courier New', monospace;
+    text-align: left;
+  }
+
+  /* Responsive (auto adjust on smaller screens) */
+  @media (max-width: 700px) {
+    .result-output {
+      column-count: 2;
+    }
+  }
+  @media (max-width: 480px) {
+    .result-output {
+      column-count: 1;
+    }
+  }
 
         async function submitForm() {
             let strength = document.getElementById("strength").value;
