@@ -112,39 +112,42 @@
       line-height: 1.5;
     }
 
-    /* Compact, nicely balanced 3-column result grid */
 /* Perfectly aligned, equal column result grid */
+/* Perfectly aligned, equal column result grid (responsive version) */
 .result-output {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  column-gap: 60px;    /* more even horizontal balance */
-  row-gap: 3px;        /* small neat vertical spacing */
+  column-gap: 40px;
+  row-gap: 3px;
   font-family: 'Courier New', monospace;
   text-align: left;
   font-size: 15px;
   justify-content: center;
   margin: 0 auto;
-  max-width: 90%;
+  max-width: 95%;
   white-space: pre;
   line-height: 1.0;
-  letter-spacing: 0.5px; /* ensures even spacing visually */
+  letter-spacing: 0.5px;
 }
 
 .result-output p {
   margin: 0;
   padding: 0;
   text-align: left;
-  display: inline-block;
-  width: 150px; /* 👈 force equal width across all columns */
 }
 
-    @media (max-width: 900px) {
-      .result-output { grid-template-columns: repeat(2, 1fr); }
-    }
+/* ✅ Responsive: auto adjust columns */
+@media (max-width: 900px) {
+  .result-output {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
-    @media (max-width: 600px) {
-      .result-output { grid-template-columns: 1fr; }
-    }
+@media (max-width: 600px) {
+  .result-output {
+    grid-template-columns: 1fr;
+  }
+}
 
     .sand-cat-icon {
       position: absolute;
