@@ -64,8 +64,11 @@ public class Main {
 
                 // Build the value[] array: length = numInputs, each entry = paramValue
                 // (Your generator's constructor expects an int[] describing number of values per input)
-                int[] value = new int[numInputs];
-                Arrays.fill(value, paramValue);
+                // Generate value array based on numInputs and paramValue (match GitHub Codespace)
+                int[] value = new int[paramValue];
+                for (int i = 0; i < paramValue; i++) {
+                    value[i] = numInputs;
+                }
 
                 System.out.println("[DEBUG] /generate called with strength=" + strength
                         + " numInputs=" + numInputs + " paramValue=" + paramValue);
