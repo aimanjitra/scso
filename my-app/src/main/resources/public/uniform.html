@@ -328,71 +328,80 @@
 
     // --- Added: PNG and TXT export functions (adapted from your second code) ---
     async function savePNG() {
-      // orientation handling: swap width/height when landscape chosen by rotating canvas
-      const orientation = document.getElementById('orientation').value;
-      const box = document.getElementById("captureBox");
+  // safely read orientation (fallback to 'portrait' if select is missing)
+  const orientationEl = document.getElementById('orientation');
+  const orientation = orientationEl ? orientationEl.value : 'portrait';
 
-      // html2canvas will capture the element. For landscape, we'll create a temporary canvas and rotate it.
-      const canvas = await html2canvas(box, { scale: 2 });
+  const box = document.getElementById("captureBox");
+  if (!box) {
+    alert('Capture box not found.');
+    return;
+  }
 
-      if (orientation === 'portrait') {
-        const imgData = canvas.toDataURL("image/png");
-        const link = document.createElement("a");
-        link.href = imgData;
-        link.download = "SandCatTest.png";
-        link.click();
-        return;
-      }
+  // html2canvas will capture the element
+  const canvas = await html2canvas(box, { scale: 2 });
 
-      // landscape: rotate canvas 90deg and export
-      const rotated = document.createElement('canvas');
-      rotated.width = canvas.height;
-      rotated.height = canvas.width;
-      const ctx = rotated.getContext('2d');
+  if (orientation === 'portrait') {
+    const imgData = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.href = imgData;
+    link.download = "SandCatTest.png";
+    link.click();
+    return;
+  }
 
-      // translate to center & rotate
-      ctx.translate(rotated.width / 2, rotated.height / 2);
-      ctx.rotate(-Math.PI / 2);
-      ctx.drawImage(canvas, -canvas.width / 2, -canvas.height / 2);
-      const imgData = rotated.toDataURL("image/png");
-      const link = document.createElement("a");
-      link.href = imgData;
-      link.download = "SandCatTest_landscape.png";
-      link.click();
-    }
+  // landscape: rotate canvas 90deg and export
+  const rotated = document.createElement('canvas');
+  rotated.width = canvas.height;
+  rotated.height = canvas.width;
+  const ctx = rotated.getContext('2d');
+
+  ctx.translate(rotated.width / 2, rotated.height / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.drawImage(canvas, -canvas.width / 2, -canvas.height / 2);
+
+  const imgData = rotated.toDataURL("image/png");
+  const link = document.createElement("a");
+  link.href = imgData;
+  link.download = "SandCatTest_landscape.png";
+  link.click();
+}
 
     function downloadText() {
-      const strength = document.getElementById("strength").value || '';
-      const numInputs = document.getElementById("numInputs").value || '';
-      const paramValue = document.getElementById("paramValue").value || '';
+  // safely read orientation (fallback to 'portrait' if select is missing)
+  const orientationEl = document.getElementById('orientation');
+  const orientation = orientationEl ? orientationEl.value : 'portrait';
 
-      // Grab rendered result text (raw)
-      const rawContainer = document.getElementById("result-container");
-      let raw = rawContainer ? rawContainer.innerText : '';
+  const strength = document.getElementById("strength").value || '';
+  const numInputs = document.getElementById("numInputs").value || '';
+  const paramValue = document.getElementById("paramValue").value || '';
 
-      // Clean some server labels if present (similar to second file)
-      let cleaned = raw
-        .replace(/Result Set.*?\n/g, "")
-        .replace(/Result Set.*cases\./g, "")
-        .trim();
+  // Grab rendered result text (raw)
+  const rawContainer = document.getElementById("result-container");
+  let raw = rawContainer ? rawContainer.innerText : '';
 
-      let count = 0;
-      if (cleaned.length) {
-        count = cleaned.split("\n").filter(line => /^\d+\)/.test(line)).length;
-      }
+  // Clean some server labels if present
+  let cleaned = raw
+    .replace(/Result Set.*?\n/g, "")
+    .replace(/Result Set.*cases\./g, "")
+    .trim();
 
-      const orientation = document.getElementById('orientation').value;
-      const header = `Result for configuration, t(strength)-${strength} , ${numInputs}^${paramValue} (${orientation})\n\n`;
-      const footer = `\nCompleted with ${count} test cases.`;
+  let count = 0;
+  if (cleaned.length) {
+    count = cleaned.split("\n").filter(line => /^\d+\)/.test(line)).length;
+  }
 
-      const finalText = header + cleaned + footer;
+  const header = `Result for configuration, t(strength)-${strength} , ${numInputs}^${paramValue} (${orientation})\n\n`;
+  const footer = `\nCompleted with ${count} test cases.`;
 
-      const blob = new Blob([finalText], { type: "text/plain" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "test_suite.txt";
-      link.click();
-    }
+  const finalText = header + cleaned + footer;
+
+  const blob = new Blob([finalText], { type: "text/plain" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "test_suite.txt";
+  link.click();
+}
 
     document.addEventListener('DOMContentLoaded', updateFormula);
   </script>
