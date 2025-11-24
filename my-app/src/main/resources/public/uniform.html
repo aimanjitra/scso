@@ -20,16 +20,17 @@
       color: #5C4D3D;
     }
 
-    .container {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 25px;
-      background-color: rgba(237, 201, 175, 0.92);
-      border-radius: 15px;
-      box-shadow: 0 8px 16px rgba(92, 77, 61, 0.3);
-      border: 2px solid #A38B6A;
-      position: relative;
-    }
+     .container {
+            width: 90%;
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 25px;
+            background-color: rgba(237, 201, 175, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(92, 77, 61, 0.3);
+            border: 2px solid #A38B6A;
+            position: relative; /* Needed for logo positioning */
+        }
 
     h2 {
       color: #8B5A2B;
@@ -229,6 +230,7 @@
     <div class="sand-cat-icon"></div>
 
     <h2>SandCatTest</h2>
+    <h3>Online Testing Tool Based on Sand Cat Swarm Optimization</h3>
 
     <div class="formula-container" id="formulaDisplay">1, 2²</div>
 
@@ -249,12 +251,6 @@
 
     <!-- Added small controls: orientation selector + export buttons -->
     <div class="controls-row" style="margin-top: 10px;">
-      <label style="align-self:center;">Orientation:</label>
-      <select id="orientation" style="padding:8px; border-radius:6px;">
-        <option value="portrait">Portrait</option>
-        <option value="landscape">Landscape</option>
-      </select>
-
       <button class="small-button" id="savePngBtn" style="display:none;" onclick="savePNG()">Save PNG</button>
       <button class="small-button" id="downloadTxtBtn" style="display:none;" onclick="downloadText()">Download .txt</button>
     </div>
